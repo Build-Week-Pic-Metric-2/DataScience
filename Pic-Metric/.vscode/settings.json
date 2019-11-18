@@ -1,0 +1,6 @@
+{
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "python.pythonPath": "/Users/curtismckendrick/.local/share/virtualenvs/1_build_week-qLgIKw_t/bin/python"
+}
