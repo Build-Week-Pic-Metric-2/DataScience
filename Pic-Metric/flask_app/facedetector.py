@@ -14,7 +14,7 @@ import urllib.request
 def extract_faces(filename_or_orl):
 # load image from file
 
-    ## Experimenting with pulling images from URLs
+    # # Experimenting with pulling images from URLs
     # response = requests.get(url)
     # img = Image.open(BytesIO(response.content))
     # image = Image.open(urllib.request.urlopen(url))
@@ -43,8 +43,9 @@ def extract_faces(filename_or_orl):
                 i +=1
     return f'{i} faces have been detected in the given image'
 
+url2 = 'people.jpg'
 url = 'https://raw.githubusercontent.com/Build-Week-Pic-Metric-2/DataScience/master/examples/001.jpeg'
-extract_faces(url)
+extract_faces(url2)
 
 # # load the photo and extract the face
 # extract_faces('people.jpg')
