@@ -8,6 +8,10 @@ flake8 = "*"
 
 [packages]
 flask = "*"
+numpy = "*"
+matplotlib = "*"
+pillow = "*"
+mtcnn = "*"
 
 [requires]
 python_version = "3.7"
