@@ -22,8 +22,8 @@ def create_app():
     def root():
         return "Hello world!"
 
-    @app.route('/summary')
-    def summary_app():
+    @app.route('/summary/<img_path>/', methods=['GET'])
+    def summary_app(img_path):
         # returns a single prediction for each detected face/object
         return summary(img_path)
 
