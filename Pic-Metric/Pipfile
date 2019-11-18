@@ -12,6 +12,7 @@ numpy = "*"
 matplotlib = "*"
 pillow = "*"
 mtcnn = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.7"
