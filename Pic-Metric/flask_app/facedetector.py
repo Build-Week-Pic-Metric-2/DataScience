@@ -13,6 +13,7 @@ import shutil
 # extract a single face from a given photograph
 def extract_faces(filename_or_orl):
     # load image from file
+    print("Is this working? first line of function")
 
     # # Experimenting with pulling images from URLs
     # response = requests.get(url)
@@ -28,8 +29,10 @@ def extract_faces(filename_or_orl):
     # detect faces in the image
     results = detector.detect_faces(pixels)
     i = 0
+    print("is this working? Line of function before 'for loop'")
+    print(results)
     for result in results:
-        # insert face only if confidence is greater than 10%
+        # insert face only if confidence is greater than 99%
         if(result['confidence'] > 0.99):
             face_x, face_y, width, height = result['box']
             # check for negative index
@@ -41,10 +44,10 @@ def extract_faces(filename_or_orl):
                 shutil.move(dir_path, os.getcwd() + '/output/faces/')
                 i += 1
     return f'{i} faces have been detected in the given image'
-
-
+    # return "function has finished"
 # url2 = 'people.jpg'
-# url = 'https://raw.githubusercontent.com/Build-Week-Pic-Metric-2/DataScience/master/examples/001.jpeg'
+# url = """https://raw.githubusercontent.com/Build-Week-Pic-Metric-2/
+# DataScience/master/examples/001.jpeg"""
 # extract_faces(url2)
 
 # # load the photo and extract the face
