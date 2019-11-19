@@ -32,7 +32,7 @@ def export_count_json():
     filename = 'export'  # Making path for writeToJSONFile
     # Making Data for writeToJSONFile with count_img
     data = {
-        'user_ID' : {
+        'user_ID': {
             'job_ID': {
                 "face_count": count_img('Test'),
                 "car_count": 2

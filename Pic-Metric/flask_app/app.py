@@ -1,8 +1,9 @@
 from flask import Flask
-from .dummy_extract_functions import extract_faces, extract_objects
+from .dummy_extract_functions import extract_objects
+from .facedetector import extract_faces
 from .dummy_summary_functions import batch_img_summary, summary
 
-img_path = "what I get from web"
+img_path = 'people.jpg'
 
 ' {"1234_userID":{"jobID":{"face_count":5, "car_count":2}}} '
 
