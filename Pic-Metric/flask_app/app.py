@@ -1,6 +1,6 @@
 from flask import Flask
 # from .dummy_extract_functions import extract_objects
-# from .facedetector import extract_faces
+from .facedetector import extract_faces
 # from .dummy_summary_functions import batch_img_summary, summary
 import os
 
@@ -41,8 +41,8 @@ def create_app():
     @app.route('/extract_faces')
     def faces():
         # extracts faces from a given image
-        return str(img_path)
-        # return extract_faces(data_url + img_path)
+        # return str(img_path)
+        return extract_faces(data_url + img_path)
 
     # @app.route('/extract_objects')
     # def objects():
