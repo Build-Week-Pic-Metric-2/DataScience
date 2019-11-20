@@ -12,6 +12,7 @@ import shutil
 # create the detector, using default weights
 detector = MTCNN()
 
+
 # extract a single face from a given photograph
 def extract_faces(filename_or_orl):
     # load image from file
@@ -42,7 +43,17 @@ def extract_faces(filename_or_orl):
                 face_image = Image.fromarray(face)
                 face_image.save(f'{i}.jpg')
                 dir_path = os.getcwd() + f'/{i}.jpg'
-                shutil.move(dir_path, os.getcwd() + '/flask_app/output/faces/')
+                """ If your output file is in "flask_app"
+                run this line of code below
+                """
+                # places the faces in a folder inside the flask_app dir
+                # shutil.move(dir_path, os.getcwd() + '/flask_app/output/faces/')
+                """ If your output file is in "Pic-Metric"
+                run this line of code below
+                and comment out the previous line.
+                """
+                # places the faces in a folder outside the flask_app dir
+                shutil.move(dir_path, os.getcwd() + '/output/faces/')
                 i += 1
     return f'{i} faces have been detected in the given image'
     # return "function has finished"
