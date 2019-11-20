@@ -1,0 +1,13 @@
+{'/home/ec2-user/SageMaker/DataScience/demoimages/bikini.png': {'person': 1,
+  'umbrella': 1},
+ '/home/ec2-user/SageMaker/DataScience/demoimages/food.png': {'bowl': 3,
+  'orange': 5,
+  'broccoli': 1,
+  'diningtable': 1},
+ '/home/ec2-user/SageMaker/DataScience/demoimages/vase.png': {'pottedplant': 1,
+  'vase': 1},
+ '/home/ec2-user/SageMaker/DataScience/demoimages/giraffe.png': {'giraffe': 1},
+ '/home/ec2-user/SageMaker/DataScience/demoimages/horses.png': {'person': 5,
+  'horse': 2,
+  'pottedplant': 1},
+ '/home/ec2-user/SageMaker/DataScience/demoimages/zebra.png': {'zebra': 1}}
