@@ -1,8 +1,11 @@
 import tensorflow as tf
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-from IPython.display import display
+# from IPython.display import display
 import glob
+import os
+
+SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 _BATCH_NORM_DECAY = 0.9
 _BATCH_NORM_EPSILON = 1e-05
@@ -12,6 +15,7 @@ _ANCHORS = [(10, 13), (16, 30), (33, 23),
             (116, 90), (156, 198), (373, 326)]
 _MODEL_SIZE = (416, 416)
 
+# CLASS_NAMES = load_class_names('yolofiles/coco.names')
 
 
 def batch_norm(inputs, training, data_format):
@@ -57,6 +61,7 @@ def conv2d_fixed_padding(inputs, filters, kernel_size, data_format, strides=1):
         inputs=inputs, filters=filters, kernel_size=kernel_size,
         strides=strides, padding=('SAME' if strides == 1 else 'VALID'),
         use_bias=False, data_format=data_format)
+
 
 def darknet53_residual_block(inputs, filters, training, data_format,
                              strides=1):
@@ -140,6 +145,7 @@ def darknet53(inputs, training, data_format):
 
     return route1, route2, inputs
 
+
 def yolo_convolution_block(inputs, filters, training, data_format):
     """Creates convolution operations layer used after Darknet."""
     inputs = conv2d_fixed_padding(inputs, filters=filters, kernel_size=1,
@@ -175,6 +181,7 @@ def yolo_convolution_block(inputs, filters, training, data_format):
     inputs = tf.nn.leaky_relu(inputs, alpha=_LEAKY_RELU)
 
     return route, inputs
+
 
 def yolo_layer(inputs, n_classes, anchors, img_size, data_format):
     """Creates Yolo final detection layer.
@@ -250,6 +257,7 @@ def upsample(inputs, out_shape, data_format):
 
     return inputs
 
+
 def build_boxes(inputs):
     """Computes top left and bottom right points of the boxes."""
     center_x, center_y, width, height, confidence, classes = \
@@ -263,7 +271,6 @@ def build_boxes(inputs):
     boxes = tf.concat([top_left_x, top_left_y,
                        bottom_right_x, bottom_right_y,
                        confidence, classes], axis=-1)
-
     return boxes
 
 
@@ -309,6 +316,8 @@ def non_max_suppression(inputs, n_classes, max_output_size, iou_threshold,
         boxes_dicts.append(boxes_dict)
 
     return boxes_dicts
+
+
 class Yolo_v3:
     """Yolo v3 model class."""
 
@@ -414,6 +423,36 @@ class Yolo_v3:
                 confidence_threshold=self.confidence_threshold)
 
             return boxes_dicts
+
+
+def load_images(img_names, model_size):
+    """Loads images in a 4D array.
+    Args:
+        img_names: A list of images names.
+        model_size: The input size of the model.
+        data_format: A format for the array returned
+            ('channels_first' or 'channels_last').
+    Returns:
+        A 4D NumPy array.
+    """
+    imgs = []
+    for img_name in img_names:
+        img = Image.open(img_name)
+        img = img.resize(size=model_size)
+        img = np.array(img, dtype=np.float32)
+        img = np.expand_dims(img, axis=0)
+        imgs.append(img)
+    imgs = np.concatenate(imgs)
+    return imgs
+
+
+def load_class_names(file_name):
+    """Returns a list of class names read from `file_name`."""
+    with open(file_name, 'r') as f:
+        class_names = f.read().splitlines()
+    return class_names
+
+
 def load_weights(variables, file_name):
     """Reshapes and loads official pretrained Yolo weights.
 
@@ -501,50 +540,51 @@ def load_weights(variables, file_name):
 
 def get_detection(img_names):
 
-	batch_size = len(img_names)
-	batch = load_images(img_names, model_size=_MODEL_SIZE)
-	class_names = load_class_names('yolofiles/coco.names')
-	n_classes = len(class_names)
-	max_output_size = 10
-	iou_threshold = 0.5
-	confidence_threshold = 0.5
+    batch_size = len(img_names)
+    batch = load_images(img_names, model_size=_MODEL_SIZE)
+    class_names = load_class_names(SITE_ROOT + '/yolofiles/coco.names')
+    n_classes = len(class_names)
+    max_output_size = 10
+    iou_threshold = 0.5
+    confidence_threshold = 0.5
 
-	model = Yolo_v3(n_classes=n_classes, model_size=_MODEL_SIZE,
-	                max_output_size=max_output_size,
-	                iou_threshold=iou_threshold,
-	                confidence_threshold=confidence_threshold)
+    model = Yolo_v3(n_classes=n_classes, model_size=_MODEL_SIZE,
+                    max_output_size=max_output_size,
+                    iou_threshold=iou_threshold,
+                    confidence_threshold=confidence_threshold)
 
-	inputs = tf.placeholder(tf.float32, [batch_size, 416, 416, 3])
-	detections = model(inputs, training=False)
+    inputs = tf.placeholder(tf.float32, [batch_size, 416, 416, 3])
+    detections = model(inputs, training=False)
 
-	model_vars = tf.global_variables(scope='yolo_v3_model')
-	assign_ops = load_weights(model_vars, 'yolofiles/yolov3.weights')
-	with tf.Session() as sess:
-	    sess.run(assign_ops)
-	    detection_result = sess.run(detections, feed_dict={inputs: batch})
+    model_vars = tf.global_variables(scope='yolo_v3_model')
+    assign_ops = load_weights(model_vars, SITE_ROOT + '/yolofiles/yolov3.weights')
+    with tf.Session() as sess:
+        sess.run(assign_ops)
+        detection_result = sess.run(detections, feed_dict={inputs: batch})
 
-	return detection_result
-    
-#draw_boxes(img_names, detection_result, class_names, _MODEL_SIZE)
+    return detection_result, class_names
 
-def get_summary(img_names,results,class_names):
+# draw_boxes(img_names, detection_result, class_names, _MODEL_SIZE)
+
+
+def get_summary(img_names, results, class_names):
     obj_list = []
-    for i,result in enumerate(detection_result):
+    for i, result in enumerate(results):
         obj_type = []
         obj_qty = []
         for item in result:
             no_of_items = len(result[item])
-            if(no_of_items>0):
+            if(no_of_items > 0):
                 obj_type.append(class_names[item])
                 obj_qty.append(no_of_items)
-                #print(f'In {img_names[i]}, we found {no_of_items} of {class_names[item]}')
-        obj_list.append(dict(zip(obj_type,obj_qty)))
-    summary = dict(zip(img_names,obj_list))
+                # print(f'In {img_names[i]}, we found {no_of_items} of {class_names[item]}')
+        obj_list.append(dict(zip(obj_type, obj_qty)))
+    summary = dict(zip(img_names, obj_list))
     return summary
 
-def get_obj_images(img_names,results,class_names):
+def get_obj_images(img_names, results, class_names):
     obj_list = []
-    for i,result in enumerate(detection_result):
+    for i,result in enumerate(results):
         image = Image.open(img_names[i])
         resize_factor = \
             (image.size[0] / _MODEL_SIZE[0], image.size[1] / _MODEL_SIZE[1])
@@ -559,5 +599,5 @@ def get_obj_images(img_names,results,class_names):
                     obj_image = image.crop(xy)
                     obj_image.save(f'objectimages/{i}_{j}.jpg')
                     print(class_names[res],'confidence:',confidence)
-                    display(obj_image)
+                    # display(obj_image)
     return None
