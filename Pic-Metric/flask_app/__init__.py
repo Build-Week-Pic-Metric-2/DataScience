@@ -1,4 +1,4 @@
-""" entry point for twitoff flask app """
+""" entry point for Pic-Metric flask app """
 
 from .app import create_app
 

@@ -538,6 +538,7 @@ def load_weights(variables, file_name):
 
     return assign_ops
 
+
 def get_detection(img_names):
 
     batch_size = len(img_names)
@@ -582,9 +583,10 @@ def get_summary(img_names, results, class_names):
     summary = dict(zip(img_names, obj_list))
     return summary
 
+
 def get_obj_images(img_names, results, class_names):
     obj_list = []
-    for i,result in enumerate(results):
+    for i, result in enumerate(results):
         image = Image.open(img_names[i])
         resize_factor = \
             (image.size[0] / _MODEL_SIZE[0], image.size[1] / _MODEL_SIZE[1])
@@ -592,12 +594,12 @@ def get_obj_images(img_names, results, class_names):
         obj_qty = []
         for res in result:
             no_of_items = len(result[res])
-            if(no_of_items>0):
-                for j,item in enumerate(result[res]):
-                    xy,confidence = item[:4],item[-1]
+            if(no_of_items > 0):
+                for j, item in enumerate(result[res]):
+                    xy, confidence = item[:4], item[-1]
                     xy = [xy[i] * resize_factor[i % 2] for i in range(4)]
                     obj_image = image.crop(xy)
                     obj_image.save(f'objectimages/{i}_{j}.jpg')
-                    print(class_names[res],'confidence:',confidence)
+                    print(class_names[res], 'confidence:', confidence)
                     # display(obj_image)
     return None

@@ -14,6 +14,7 @@ img_path = [data_url + '/' + f for f in os.listdir(data_url) if not f.startswith
 
 file_name = "/giraffes.jpg"
 
+
 def create_app():
     app = Flask(__name__)
 

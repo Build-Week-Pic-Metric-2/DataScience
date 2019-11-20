@@ -47,7 +47,7 @@ def extract_faces(filename_or_orl):
                 run this line of code below
                 """
                 # places the faces in a folder inside the flask_app dir
-                # shutil.move(dir_path, os.getcwd() + '/flask_app/output/faces/')
+                # shutil.move(dir_path, os.getcwd()+'/flask_app/output/faces/')
                 """ If your output file is in "Pic-Metric"
                 run this line of code below
                 and comment out the previous line.
