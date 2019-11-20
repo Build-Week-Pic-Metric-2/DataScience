@@ -1,6 +1,7 @@
 from flask import Flask
 # from .dummy_extract_functions import extract_objects
 from .facedetector import extract_faces
+from mtcnn.mtcnn import MTCNN
 # from .dummy_summary_functions import batch_img_summary, summary
 import os
 
@@ -11,6 +12,7 @@ img_path = '/people.jpg'
 
 # ' {"1234_userID":{"jobID":{"face_count":5, "car_count":2}}} '
 
+detector = MTCNN()
 
 # wasn't sure how to give each user a unique id, so I made a class
 # to put each user in. Will probably change this

@@ -9,6 +9,8 @@ import shutil
 # from io import BytesIO
 # import urllib.request
 
+# create the detector, using default weights
+detector = MTCNN()
 
 # extract a single face from a given photograph
 def extract_faces(filename_or_orl):
@@ -22,8 +24,7 @@ def extract_faces(filename_or_orl):
 
     # Actual code
     pixels = pyplot.imread(filename_or_orl)
-    # create the detector, using default weights
-    detector = MTCNN()
+
     # Select image file in "user[123]" and name "people"
     # users = []
     # detect faces in the image
@@ -41,7 +42,7 @@ def extract_faces(filename_or_orl):
                 face_image = Image.fromarray(face)
                 face_image.save(f'{i}.jpg')
                 dir_path = os.getcwd() + f'/{i}.jpg'
-                shutil.move(dir_path, os.getcwd() + '/output/faces/')
+                shutil.move(dir_path, os.getcwd() + '/flask_app/output/faces/')
                 i += 1
     return f'{i} faces have been detected in the given image'
     # return "function has finished"
