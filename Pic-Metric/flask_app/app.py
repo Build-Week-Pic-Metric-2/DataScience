@@ -1,5 +1,5 @@
 from flask import Flask
-from .facedetector import extract_faces
+from .facedetector import extract_faces, count_faces
 from .object_detector import get_detection
 from .object_detector import get_summary
 from .s3_fetch import clear_images, get_picture_for_model
@@ -61,5 +61,18 @@ def create_app():
         results, classnames = get_detection([new_image_path])
         summary = get_summary([new_image_path], results, classnames)
         return summary
+
+    @app.route('/count_faces/<user_id>/<image_id>', methods=['GET'])
+    def count_faces_aws(user_id, image_id):
+        # clear_images()
+        user_id = user_id
+        image_id = image_id
+        # count faces from a given image
+        get_picture_for_model(user_id, image_id)
+        # creating new filepath
+        new_image_path = SITE_ROOT + f'/images/{image_id}'
+        # move image to /images/ of flask_app directory
+        os.rename(f'{image_id}', new_image_path)
+        return count_faces(new_image_path, user_id, image_id)
 
     return app

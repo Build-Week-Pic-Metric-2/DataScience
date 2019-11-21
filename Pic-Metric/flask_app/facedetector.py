@@ -13,10 +13,22 @@ import shutil
 detector = MTCNN()
 
 
+def count_faces(filename_or_url, user_id, image_id):
+    """Simply count the number of faces in an image"""
+    pixels = pyplot.imread(filename_or_url)
+    # detect faces in the image
+    results = detector.detect_faces(pixels)
+    count = str(len(results))
+
+    # Need user_id and image_id
+    send_back = {f'{user_id}': {f'{image_id}': {'person': count}}}
+    send_back_dummy = {'dummy': 1}
+    return send_back
+
+
 # extract a single face from a given photograph
 def extract_faces(filename_or_orl):
     # load image from file
-    print("Is this working? first line of function")
 
     # # Experimenting with pulling images from URLs
     # response = requests.get(url)
@@ -31,8 +43,6 @@ def extract_faces(filename_or_orl):
     # detect faces in the image
     results = detector.detect_faces(pixels)
     i = 0
-    print("is this working? Line of function before 'for loop'")
-    print(results)
     for result in results:
         # insert face only if confidence is greater than 99%
         if(result['confidence'] > 0.99):
