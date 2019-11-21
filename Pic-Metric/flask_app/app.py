@@ -108,7 +108,7 @@ def create_app():
             f.write(image.content)
         results, classnames = get_detection([new_image_path])
         summary = get_summary_url([user_id],[photo_id], results, classnames)
-        return summary
+        return jsonify(summary)
 
     @app.route('/extract_multiple_image_url', methods = ['POST'])
     def extract_multiple_urlimage():
