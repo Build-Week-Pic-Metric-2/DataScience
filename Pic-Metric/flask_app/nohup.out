@@ -1,0 +1,87 @@
+[2019-11-21 07:14:49 +0000] [3922] [INFO] Starting gunicorn 20.0.0
+[2019-11-21 07:14:49 +0000] [3922] [INFO] Listening at: http://127.0.0.1:8000 (3922)
+[2019-11-21 07:14:49 +0000] [3922] [INFO] Using worker: sync
+[2019-11-21 07:14:49 +0000] [3926] [INFO] Booting worker with pid: 3926
+[2019-11-21 07:14:49 +0000] [3926] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 133, in init_process
+    self.load_wsgi()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 142, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 49, in load
+    return self.load_wsgiapp()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 39, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/util.py", line 331, in import_app
+    mod = importlib.import_module(module)
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/lib64/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'flask_app'
+[2019-11-21 07:14:49 +0000] [3926] [INFO] Worker exiting (pid: 3926)
+[2019-11-21 07:14:49 +0000] [3922] [INFO] Shutting down: Master
+[2019-11-21 07:14:49 +0000] [3922] [INFO] Reason: Worker failed to boot.
+[2019-11-21 07:21:01 +0000] [4144] [INFO] Starting gunicorn 20.0.0
+[2019-11-21 07:21:01 +0000] [4144] [INFO] Listening at: http://127.0.0.1:8000 (4144)
+[2019-11-21 07:21:01 +0000] [4144] [INFO] Using worker: sync
+[2019-11-21 07:21:01 +0000] [4148] [INFO] Booting worker with pid: 4148
+[2019-11-21 07:21:01 +0000] [4148] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 133, in init_process
+    self.load_wsgi()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 142, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 49, in load
+    return self.load_wsgiapp()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 39, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/util.py", line 331, in import_app
+    mod = importlib.import_module(module)
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/lib64/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'flask_app'
+[2019-11-21 07:21:01 +0000] [4148] [INFO] Worker exiting (pid: 4148)
+[2019-11-21 07:21:02 +0000] [4144] [INFO] Shutting down: Master
+[2019-11-21 07:21:02 +0000] [4144] [INFO] Reason: Worker failed to boot.
+[2019-11-21 08:09:32 +0000] [5989] [INFO] Starting gunicorn 20.0.0
+[2019-11-21 08:09:32 +0000] [5989] [INFO] Listening at: http://127.0.0.1:8000 (5989)
+[2019-11-21 08:09:32 +0000] [5989] [INFO] Using worker: sync
+[2019-11-21 08:09:32 +0000] [5993] [INFO] Booting worker with pid: 5993
+[2019-11-21 08:09:32 +0000] [5993] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 133, in init_process
+    self.load_wsgi()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 142, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 49, in load
+    return self.load_wsgiapp()
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 39, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/local/lib/python3.6/dist-packages/gunicorn/util.py", line 331, in import_app
+    mod = importlib.import_module(module)
+  File "/home/ec2-user/.local/share/virtualenvs/Pic-Metric-ek-HQ1mS/lib64/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'flask_app'
+[2019-11-21 08:09:32 +0000] [5993] [INFO] Worker exiting (pid: 5993)
+[2019-11-21 08:09:32 +0000] [5989] [INFO] Shutting down: Master
+[2019-11-21 08:09:32 +0000] [5989] [INFO] Reason: Worker failed to boot.
