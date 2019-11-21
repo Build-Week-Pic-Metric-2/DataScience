@@ -1,13 +1,19 @@
-from flask import Flask,request
+from flask import Flask, flash, request, redirect, render_template, jsonify
 from .facedetector import extract_faces, count_faces
 from .object_detector import get_detection
 from .object_detector import get_summary,get_summary_url
 from .s3_fetch import clear_images, get_picture_for_model
+from werkzeug.utils import secure_filename
 import requests
 import os
 
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 data_url = os.path.join(SITE_ROOT, "images")
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 img_path = [data_url + '/' + f for f in os.listdir(data_url) if not f.startswith('.')]
 # for image in img_path:
@@ -21,7 +27,7 @@ def create_app():
 
     @app.route('/')
     def root():
-        return f"{img_path}"
+        return render_template('user_template.html')
 
     # @app.route('/summary/<img_path>/', methods=['GET'])
     # def summary_app(img_path):
@@ -32,6 +38,48 @@ def create_app():
     # def batch_img_summary_app():
     #     # returns a group of predictions for each detected face/object
     #     return batch_img_summary(img_path)
+
+    @app.route('/analysis', methods=['POST'])
+    def analysis():
+        print(request)
+        if request.method == 'POST':
+            print('We are at the post')
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            if file.filename == '':
+                flash('No file selected for uploading')
+                return redirect(request.url)
+            # if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(data_url, filename))
+            where_are_we = os.path.join(data_url, filename)
+            print(where_are_we)
+            print('We got this far!')
+            flash('File successfully uploaded')
+            return render_template('uploaded_image.html', file=file)
+
+    # @app.route('/analysis', methods=['POST'])
+    # def analysis():
+	# if request.method == 'POST':
+    #     # check if the post request has the file part
+	# 	if 'file' not in request.files:
+	# 		flash('No file part')
+	# 		return redirect(request.url)
+	# 	file = request.files['file']
+	# 	if file.filename == '':
+	# 		flash('No file selected for uploading')
+	# 		return redirect(request.url)
+	# 	if file and allowed_file(file.filename):
+	# 		filename = secure_filename(file.filename)
+	# 		file.save(os.path.join(data_url, filename))
+	# 		flash('File successfully uploaded')
+	# 		return redirect('/')
+	# 	else:
+	# 		flash('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
+	# 		return redirect(request.url)
 
     @app.route('/extract_faces')
     def faces():
@@ -83,7 +131,7 @@ def create_app():
                 f.write(image.content)
         results, classnames = get_detection(images_path)
         summary = get_summary_url(users,photoids, results, classnames)
-        return summary
+        return jsonify(summary)
 
     @app.route('/extract_one_image/<user_id>/<image_id>', methods = ['GET'])
     def extract_one_image(user_id, image_id):
@@ -100,7 +148,7 @@ def create_app():
         # extracts objects from a given image
         results, classnames = get_detection([new_image_path])
         summary = get_summary([new_image_path], results, classnames)
-        return summary
+        return jsonify(summary)
 
     @app.route('/count_faces/<user_id>/<image_id>', methods=['GET'])
     def count_faces_aws(user_id, image_id):
@@ -114,5 +162,9 @@ def create_app():
         # move image to /images/ of flask_app directory
         os.rename(f'{image_id}', new_image_path)
         return count_faces(new_image_path, user_id, image_id)
+    
+
+
+    app.secret_key = "my_secret_key"
 
     return app
