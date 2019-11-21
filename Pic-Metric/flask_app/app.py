@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request, jsonify
 from .facedetector import extract_faces, count_faces
 from .object_detector import get_detection
 from .object_detector import get_summary,get_summary_url
@@ -59,7 +59,7 @@ def create_app():
             f.write(image.content)
         results, classnames = get_detection([new_image_path])
         summary = get_summary_url([user_id],[photo_id], results, classnames)
-        return summary
+        return jsonify(summary)
 
     @app.route('/extract_multiple_image_url', methods = ['POST'])
     def extract_multiple_urlimage():
@@ -83,7 +83,7 @@ def create_app():
                 f.write(image.content)
         results, classnames = get_detection(images_path)
         summary = get_summary_url(users,photoids, results, classnames)
-        return summary
+        return jsonify(summary)
 
     @app.route('/extract_one_image/<user_id>/<image_id>', methods = ['GET'])
     def extract_one_image(user_id, image_id):
