@@ -105,3 +105,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+
+#max's yoloweights
+/Pic-Metric/flask_app/yolofiles/yolov3.weights
+*.weights

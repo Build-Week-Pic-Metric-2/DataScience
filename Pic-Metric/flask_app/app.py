@@ -41,7 +41,9 @@ def create_app():
 
     @app.route('/analysis', methods=['POST'])
     def analysis():
-        print(request)
+        # send POST method image to flask 
+        ### post method has to include user_id and image_id
+        # and send "Success" message
         if request.method == 'POST':
             print('We are at the post')
             # check if the post request has the file part
@@ -55,11 +57,10 @@ def create_app():
             # if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(data_url, filename))
-            where_are_we = os.path.join(data_url, filename)
-            print(where_are_we)
-            print('We got this far!')
-            flash('File successfully uploaded')
-            return render_template('uploaded_image.html', file=file)
+            image_location = data_url + '/' + filename
+            results, classnames = get_detection([image_location])
+            summary = get_summary([image_location], results, classnames)
+            return jsonify(summary)
 
     # @app.route('/analysis', methods=['POST'])
     # def analysis():
