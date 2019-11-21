@@ -2,6 +2,7 @@ from flask import Flask
 from .facedetector import extract_faces
 from .object_detector import get_detection
 from .object_detector import get_summary
+from .s3_fetch import clear_images, get_picture_for_model
 # from .dummy_summary_functions import batch_img_summary, summary
 import os
 
@@ -44,11 +45,21 @@ def create_app():
         summary = get_summary(img_path, results, classnames)
         return summary
 
-    @app.route('/extract_one_image')
-    def one():
+    @app.route('/extract_one_image/<user_id>/<image_id>', methods = ['GET'])
+    def extract_one_image(user_id, image_id):
+        # 
+        # clear_images()
+        user_id = user_id
+        image_id = image_id
+        # count faces from a given image
+        get_picture_for_model(user_id, image_id)
+        # creating new filepath
+        new_image_path = SITE_ROOT + f'/images/{image_id}'
+        # move image to /images/ of flask_app directory
+        os.rename(f'{image_id}', new_image_path)
         # extracts objects from a given image
-        results, classnames = get_detection([data_url + file_name])
-        summary = get_summary([data_url + file_name], results, classnames)
+        results, classnames = get_detection([new_image_path])
+        summary = get_summary([new_image_path], results, classnames)
         return summary
 
     return app

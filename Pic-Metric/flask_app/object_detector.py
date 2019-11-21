@@ -579,8 +579,8 @@ def get_summary(img_names, results, class_names):
                 obj_type.append(class_names[item])
                 obj_qty.append(no_of_items)
                 # print(f'In {img_names[i]}, we found {no_of_items} of {class_names[item]}')
-        obj_list.append(dict(zip(obj_type, obj_qty)))
-    summary = dict(zip(img_names, obj_list))
+        obj_list.append({'message':img_names[i],'objects':obj_type,'counts':dict(zip(obj_type,obj_qty))})
+    summary = str(obj_list)
     return summary
 
 
