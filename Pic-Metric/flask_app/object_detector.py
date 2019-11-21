@@ -580,7 +580,22 @@ def get_summary(img_names, results, class_names):
                 obj_qty.append(no_of_items)
                 # print(f'In {img_names[i]}, we found {no_of_items} of {class_names[item]}')
         obj_list.append({'message': img_names[i], 'objects': obj_type, 'counts': dict(zip(obj_type, obj_qty))})
-    summary = str(obj_list[0])
+    summary = str(obj_list)
+    return summary
+
+def get_summary_url(usr_ids,photo_ids, results, class_names):
+    obj_list = []
+    for i, result in enumerate(results):
+        obj_type = []
+        obj_qty = []
+        for item in result:
+            no_of_items = len(result[item])
+            if(no_of_items > 0):
+                obj_type.append(class_names[item])
+                obj_qty.append(no_of_items)
+                # print(f'In {img_names[i]}, we found {no_of_items} of {class_names[item]}')
+        obj_list.append({'user_id': usr_ids[i],"photo_id":photo_ids[i], 'objects': [dict(zip(obj_type, obj_qty))]})
+    summary = str(obj_list)
     return summary
 
 

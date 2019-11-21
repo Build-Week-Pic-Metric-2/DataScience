@@ -1,7 +1,7 @@
 from flask import Flask,request
 from .facedetector import extract_faces, count_faces
 from .object_detector import get_detection
-from .object_detector import get_summary
+from .object_detector import get_summary,get_summary_url
 from .s3_fetch import clear_images, get_picture_for_model
 import requests
 import os
@@ -51,13 +51,38 @@ def create_app():
         content = request.get_json()
         print (content)
         user_id = content['user_id']
+        photo_id = content['photo_id']
         image_url = content['image_url']
         image = requests.get(image_url)
-        new_image_path = SITE_ROOT + f'/images/{user_id}'
+        new_image_path = SITE_ROOT + f'/images/{user_id}_{photo_id}'
         with open(new_image_path, 'wb') as f:
             f.write(image.content)
         results, classnames = get_detection([new_image_path])
-        summary = get_summary([user_id], results, classnames)
+        summary = get_summary_url([user_id],[photo_id], results, classnames)
+        return summary
+
+    @app.route('/extract_multiple_image_url', methods = ['POST'])
+    def extract_multiple_urlimage():
+        print (request.is_json)
+        content = request.get_json()
+        print (content)
+        users = []
+        photoids = []
+        images_path = []
+        for data in content['multiple']:
+            user_id = data['user_id']
+            photo_id = data['photo_id']
+            photoids.append(photo_id)
+            print(user_id)
+            users.append(user_id)
+            image_url = data['image_url']
+            image = requests.get(image_url)
+            new_image_path = SITE_ROOT + f'/images/{user_id}_{photo_id}'
+            images_path.append(new_image_path)
+            with open(new_image_path, 'wb') as f:
+                f.write(image.content)
+        results, classnames = get_detection(images_path)
+        summary = get_summary_url(users,photoids, results, classnames)
         return summary
 
     @app.route('/extract_one_image/<user_id>/<image_id>', methods = ['GET'])
